@@ -8,9 +8,16 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
+// ROUTES
 const resumeRoutes = require("./routes/resumeRoutes");
 app.use("/resume", resumeRoutes);
 
+// DB
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("DB Connected"))
   .catch(err => console.log(err));
