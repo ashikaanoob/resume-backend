@@ -1,52 +1,45 @@
 const Resume = require("../models/Resume");
+
+// CREATE
 exports.createResume = async (req, res) => {
   try {
-    const resume = new Resume({
-      name: req.body.name,
-      email: req.body.email,
-      phone: req.body.phone,
-      address: req.body.address,
-      education: req.body.education,
-      skills: req.body.skills,
-      experience: req.body.experience,
-      projects: req.body.projects
-    });
-
-    await resume.save();
-
-    res.status(201).json({
-      message: "Resume created successfully",
-      data: resume
-    });
-
+    const data = await Resume.create(req.body);
+    res.status(201).json(data);
   } catch (err) {
-    console.log(err);
+    res.status(500).json({ error: err.message });
   }
 };
 
-
-exports.createResume = async (req, res) => {
-  const data = await Resume.create(req.body);
-  res.json(data);
-};
-
-
+// GET
 exports.getResumes = async (req, res) => {
-  const data = await Resume.find();
-  res.json(data);
+  try {
+    const data = await Resume.find();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
-
+// UPDATE
 exports.updateResume = async (req, res) => {
-  const data = await Resume.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { returnDocument: "after" }
-  );
-  res.json(data);
+  try {
+    const data = await Resume.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { returnDocument: "after" }
+    );
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
+// DELETE
 exports.deleteResume = async (req, res) => {
-  await Resume.findByIdAndDelete(req.params.id);
-  res.json({ message: "Deleted successfully" });
+  try {
+    await Resume.findByIdAndDelete(req.params.id);
+    res.json({ message: "Deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
